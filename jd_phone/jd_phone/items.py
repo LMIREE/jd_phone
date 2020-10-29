@@ -16,7 +16,7 @@ class JdPhoneItem(scrapy.Item):
     url = scrapy.Field()  # 商品链接
     year = scrapy.Field()  # 上市年份
     month = scrapy.Field()  # 上市月份
-    #product_m_price = scrapy.Field()  # 最高价格
+    # product_m_price = scrapy.Field()  # 最高价格
     product_price = scrapy.Field()  # 当前价格
     product_o_price = scrapy.Field()  # 指导价格
     total_comment_num = scrapy.Field()  # 总评论数
