@@ -28,20 +28,23 @@ class JdSearchSpider(scrapy.Spider):
             item = JdPhoneItem()
             # title = li.xpath('div/div/a/em/text()').extract()  # 标题
             id = li.xpath('@data-sku').extract()  # id
-            p = requests.get('https:' + '//p.3.cn/prices/mgets?skuIds=J_' + id[0], headers=headers)  # 请求商品价格json
+            p = requests.get(
+                'https:' + '//p.3.cn/prices/mgets?skuIds=J_' + id[0], headers=headers)  # 请求商品价格json
             [product_dict] = json.loads(p.text)  # 获取商品价格
             # product_m_price = product_dict['m']
             product_price = product_dict['p']
             product_o_price = product_dict['op']
             c = requests.get('https://club.jd.com/comment/productCommentSummaries.action?referenceIds=' + id[0],
-                             headers=headers)  # 请求评论json
-            comment_dict = json.loads(c.text.split('[')[-1].split(']')[0])  # json内容截取
+                            headers=headers)  # 请求评论json
+            comment_dict = json.loads(c.text.split(
+                '[')[-1].split(']')[0])  # json内容截取
             total_comment_num = comment_dict['CommentCount']
             good_comment_num = comment_dict['ShowCount']
             good_percent_com = comment_dict['GoodRate']
             bad_comment_num = comment_dict['PoorCount']
             bad_percent_com = comment_dict['PoorRate']
-            url = li.xpath('div/div[@class="p-name p-name-type-2"]/a/@href').extract()  # 需要跟进的链接
+            url = li.xpath(
+                'div/div[@class="p-name p-name-type-2"]/a/@href').extract()  # 需要跟进的链接
             # item['title'] = ''.join(title)
             # item['product_m_price'] = ''.join(product_m_price)
             item['product_price'] = ''.join(product_price)
@@ -63,7 +66,7 @@ class JdSearchSpider(scrapy.Spider):
         # referer错误会跳转到：https://www.jd.com/?se=deny
         self.page += 1
         yield scrapy.Request(self.next_url % (self.keyword, self.keyword, self.page, ','.join(ids)),
-                             callback=self.next_parse, headers=headers)
+                            callback=self.next_parse, headers=headers)
 
     def next_parse(self, response):
         """
@@ -76,20 +79,23 @@ class JdSearchSpider(scrapy.Spider):
             item = JdPhoneItem()
             # title = li.xpath('div/div/a/em/text()').extract()  # 标题
             id = li.xpath('@data-sku').extract()  # id
-            p = requests.get('https:' + '//p.3.cn/prices/mgets?skuIds=J_' + id[0], headers=headers)  # 请求商品价格json
+            p = requests.get(
+                'https:' + '//p.3.cn/prices/mgets?skuIds=J_' + id[0], headers=headers)  # 请求商品价格json
             [product_dict] = json.loads(p.text)  # 获取商品价格
             # product_m_price = product_dict['m']
             product_price = product_dict['p']
             product_o_price = product_dict['op']
             c = requests.get('https://club.jd.com/comment/productCommentSummaries.action?referenceIds=' + id[0],
-                             headers=headers)  # 请求评论json
-            comment_dict = json.loads(c.text.split('[')[-1].split(']')[0])  # json内容截取
+                            headers=headers)  # 请求评论json
+            comment_dict = json.loads(c.text.split(
+                '[')[-1].split(']')[0])  # json内容截取
             total_comment_num = comment_dict['CommentCount']
             good_comment_num = comment_dict['ShowCount']
             good_percent_com = comment_dict['GoodRate']
             bad_comment_num = comment_dict['PoorCount']
             bad_percent_com = comment_dict['PoorRate']
-            url = li.xpath('div/div[@class="p-name p-name-type-2"]/a/@href').extract()  # 需要跟进的链接
+            url = li.xpath(
+                'div/div[@class="p-name p-name-type-2"]/a/@href').extract()  # 需要跟进的链接
             # item['title'] = ''.join(title)
             # item['product_m_price'] = ''.join(product_m_price)
             item['product_price'] = ''.join(product_price)
@@ -117,8 +123,10 @@ class JdSearchSpider(scrapy.Spider):
 
         item = response.meta['item']
         # item['info'] = {}
-        brand = response.xpath('//div[@class="inner border"]/div[@class="head"]/a/text()').extract()
-        product_name = response.xpath('//div[@class="item ellipsis"]/text()').extract()
+        brand = response.xpath(
+            '//div[@class="inner border"]/div[@class="head"]/a/text()').extract()
+        product_name = response.xpath(
+            '//div[@class="item ellipsis"]/text()').extract()
         item['brand'] = ''.join(brand)
         item['product_name'] = ''.join(product_name)
 
